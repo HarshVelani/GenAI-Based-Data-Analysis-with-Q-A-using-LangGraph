@@ -41,6 +41,7 @@ class DataVisualizer:
         ])
         
         response = self.llm_manager.invoke(prompt, datacolumns=datacolumns, visualization=visualization, userprompt= reason, datapath=path, data=data)
+        print("\n====Visualization Code Generated====")
         return response
     
     def format_code_response(self, datacolumns: list, visualization: str, reason: str, data: dict, path: str) -> str:
@@ -52,8 +53,10 @@ class DataVisualizer:
         with open('VS_code.py', 'w') as f:
             codes = response.split('\n')
             code = "\n".join(codes[1:-1])
+            print("\n====Cleaned Code====")
             f.write(code)
-        print(f"=======> Generated code:\n{code}")
+        
+        print(f"\n>>>>> Generated code:\n{code}")
         return code
     
     def generate_visualization(self, state: dict) -> str:
@@ -62,22 +65,17 @@ class DataVisualizer:
         visualization = state['visualization']
         reason = state['visualization_reason']
         path = state['path']
-        
         df = pd.read_json(state['results']).head(10)
-        print(f"====> Data: {df}")
+        
+        print(f"\n====> Data: {df}")
+        print("\n===Generating Code for Visualization===")
         data = df.to_json(orient="records")
         code = self.format_code_response(datacolumns, visualization, reason, data, path)
 
         print(f"\nGenerating Chart..........")
         os.system(f"python VS_code.py")
+        print(f"\n********** Chart Generated **********")
         return {"visualization_code" : code}
-    
-
-
-    def clean_responses(self, state: dict) -> dict:
-        """Clean the responses and format them for better readability."""
-        state['visualization_code'] = self.generate_visualization(state)
-        return {"results": ""}
     
 # Generating Chart..........
 # Data: Index(['Unnamed: 0', 'car name', 'brand', 'model', 'vehicle age', 'km driven',

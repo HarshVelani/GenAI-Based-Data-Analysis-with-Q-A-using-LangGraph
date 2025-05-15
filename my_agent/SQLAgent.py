@@ -17,7 +17,8 @@ class SQLAgent:
         data = self.db_manager.get_data(path)
         df = data
         columns = df.columns.tolist()
-        print(f"Columns: {columns}")
+        # print(f"Columns: {columns}")
+        print("===Data columns===")
 
 
         prompt = ChatPromptTemplate.from_messages([
@@ -46,7 +47,8 @@ The "noun_columns" field should contain only the columns that are relevant to th
         
         response = self.llm_manager.invoke(prompt, columns=columns, question=question)
         parsed_response = output_parser.parse(response)
-        print(f"Parsed response: {parsed_response}")
+        print(f">>>>> Parsed response: {parsed_response}")
+        print(f"===Relevant Columns===")
         return {"parsed_question": parsed_response}
 
     def get_unique_nouns(self, state: dict) -> dict:
@@ -63,7 +65,7 @@ The "noun_columns" field should contain only the columns that are relevant to th
             if noun_columns:
                 unique_nouns = list(set(noun_columns))
 
-        print(f"Unique nouns: {unique_nouns}")
+        print(f"\n>>>>> Relevant Columns: {unique_nouns}")
         return {"unique_nouns": unique_nouns}
 
     def filter_data(self, state: dict) -> dict:
@@ -82,6 +84,7 @@ The "noun_columns" field should contain only the columns that are relevant to th
         try:
             results = df[unique_nouns]
             # print(results)
+            print(f"\n===Filtered Data===")
             return {"results": results.to_json(orient="records")}
             
         except Exception as e:
@@ -90,7 +93,7 @@ The "noun_columns" field should contain only the columns that are relevant to th
     def format_results(self, state: dict) -> dict:
         """Format query results into a human-readable response."""
         question = state['question']
-        print(f"results: {state["results"]}")
+        # print(f"results: {state["results"]}")
         
         if "results" not in state:
             print("Error: 'results' key missing in state")
@@ -105,6 +108,7 @@ The "noun_columns" field should contain only the columns that are relevant to th
         ])
 
         response = self.llm_manager.invoke(prompt, question=question, results=results)
+        print(f"\n>>>>> Formatted response: {response}")
         return {"answer": response}
 
     def choose_visualization(self, state: dict) -> dict:
@@ -163,7 +167,7 @@ The "noun_columns" field should contain only the columns that are relevant to th
 
         visualization = parsed_response['visualization']
         reason = parsed_response['reason']
-        print(f"Visualization: {visualization}")
-        print(f"Reason: {reason}")
+        print(f"\n>>>>> Visualization: {visualization}")
+        print(f"\n>>>>> Reason: {reason}")
 
         return {"visualization": visualization, "visualization_reason": reason}
