@@ -1,10 +1,8 @@
-import requests
 import os
-from typing import List, Any
 import pandas as pd
 
 
-class DatabaseManager:
+class DataManager:
     def __init__(self):
         self.endpoint_url = os.getenv("DB_ENDPOINT_URL")
 
@@ -25,15 +23,3 @@ class DatabaseManager:
             
         except Exception as e:
             raise Exception(f"Error fetching schema: {str(e)}")
-
-    def execute_query(self, uuid: str, query: str) -> List[Any]:
-        """Execute SQL query on the remote database and return results."""
-        try:
-            response = requests.post(
-                f"{self.endpoint_url}/execute-query",
-                json={"uuid": uuid, "query": query}
-            )
-            response.raise_for_status()
-            return response.json()['results']
-        except requests.RequestException as e:
-            raise Exception(f"Error executing query: {str(e)}")

@@ -1,7 +1,7 @@
 import json
 from langchain_core.prompts import ChatPromptTemplate
 from my_agent.LLMManager import LLMManager
-from my_agent.DatabaseManager import DatabaseManager
+from my_agent.DataManager import DataManager
 from my_agent.graph_instructions import graph_instructions
 import os
 import pandas as pd
@@ -9,7 +9,7 @@ import pandas as pd
 class DataVisualizer:
     def __init__(self):
         self.llm_manager = LLMManager()
-        self.db_manager = DatabaseManager()    
+        self.db_manager = DataManager()    
 
     def code_generator_for_visualization(self, datacolumns: list, visualization: str, reason: str, data: dict, path: str) -> str:
         """Generate code for the specified visualization."""
@@ -31,8 +31,8 @@ class DataVisualizer:
             Strictly chart should be saved as a png file with the dynamic name "{visualization} + dynamic name.png".
             code should not contain any errors while running. it should be executable.
             code should include below lines:
-            from my_agent.DatabaseManager import DatabaseManager
-            db_manager = DatabaseManager()
+            from my_agent.DataManager import DataManager
+            db_manager = DataManager()
             data = db_manager.get_data({datapath})
             .
             .

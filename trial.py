@@ -4,7 +4,7 @@
 
 from langchain_core.prompts import ChatPromptTemplate
 from langchain_core.output_parsers import JsonOutputParser
-from my_agent.DatabaseManager import DatabaseManager
+from my_agent.DataManager import DatabaseManager
 from my_agent.LLMManager import LLMManager
 import pandas as pd
 import VS_code

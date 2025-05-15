@@ -1,12 +1,12 @@
 from langchain_core.prompts import ChatPromptTemplate
 from langchain_core.output_parsers import JsonOutputParser
-from my_agent.DatabaseManager import DatabaseManager
+from my_agent.DataManager import DataManager
 from my_agent.LLMManager import LLMManager
 import pandas as pd
 
-class SQLAgent:
+class DataAgent:
     def __init__(self):
-        self.db_manager = DatabaseManager()
+        self.db_manager = DataManager()
         self.llm_manager = LLMManager()
 
     def parse_question(self, state: dict) -> dict:

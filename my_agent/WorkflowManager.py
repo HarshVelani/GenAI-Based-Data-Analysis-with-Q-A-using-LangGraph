@@ -1,12 +1,12 @@
 from langgraph.graph import StateGraph
 from my_agent.State import InputState, OutputState
-from my_agent.SQLAgent import SQLAgent
+from my_agent.DataAgent import DataAgent
 from my_agent.DataVisualizer import DataVisualizer
 from langgraph.graph import END
 
 class WorkflowManager:
     def __init__(self):
-        self.sql_agent = SQLAgent()
+        self.sql_agent = DataAgent()
         self.data_visualizer = DataVisualizer()
 
     def create_workflow(self) -> StateGraph:
